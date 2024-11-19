@@ -1,140 +1,127 @@
 <template>
-    <div class="min-h-screen bg-gray-900 relative">
+    <div class="min-h-screen bg-background">
+        <Head>
+            <title>{{ title }}</title>
+            <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        </Head>
+
         <!-- Navbar -->
-        <nav class="bg-gray-800 border-b border-gray-700">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex h-16 items-center justify-between">
-                    <!-- Logo (Kiri) -->
-                    <div class="flex-shrink-0">
-                        <Link
-                            href="/"
-                            class="text-xl font-bold text-white hover:text-gray-300 transition duration-150"
-                        >
-                            CFU
-                        </Link>
-                    </div>
+        <header
+            class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+        >
+            <div
+                class="container flex h-14 max-w-7xl items-center justify-between"
+            >
+                <!-- Logo (Left) -->
+                <div class="flex">
+                    <Link href="/" class="flex items-center space-x-2">
+                        <GraduationCap class="h-6 w-6" />
+                        <span class="font-bold">{{ appName }}</span>
+                    </Link>
+                </div>
 
-                    <!-- Navigation Links (Tengah) -->
-                    <div class="flex-1 flex justify-center">
-                        <div class="hidden sm:flex sm:space-x-8">
-                            <Link
-                                href="/"
-                                class="inline-flex items-center px-1 pt-1 text-gray-300 hover:text-white transition duration-150"
-                            >
-                                Home
+                <!-- Navigation (Center) -->
+                <NavigationMenu
+                    class="hidden md:flex absolute left-1/2 transform -translate-x-1/2"
+                >
+                    <NavigationMenuList class="space-x-2">
+                        <NavigationMenuItem>
+                            <Link href="/">
+                                <NavigationMenuLink
+                                    class="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                                >
+                                    <Home class="h-4 w-4 mr-2" />
+                                    <span>Home</span>
+                                </NavigationMenuLink>
                             </Link>
-                            <Link
-                                href="/donation"
-                                class="inline-flex items-center px-1 pt-1 text-gray-300 hover:text-white transition duration-150"
-                            >
-                                Donation
-                            </Link>
-                            <Link
-                                href="/about-us"
-                                class="inline-flex items-center px-1 pt-1 text-gray-300 hover:text-white transition duration-150"
-                            >
-                                About Us
-                            </Link>
-                        </div>
-                    </div>
+                        </NavigationMenuItem>
 
-                    <!-- Auth Buttons (Kanan) -->
-                    <div class="hidden sm:flex sm:items-center sm:space-x-4">
-                        <Link
-                            href="/register"
-                            class="text-gray-300 hover:text-white transition duration-150 px-3 py-2 text-sm font-medium"
+                        <NavigationMenuItem>
+                            <Link href="/donation">
+                                <NavigationMenuLink
+                                    class="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                                >
+                                    <Heart class="h-4 w-4 mr-2" />
+                                    <span>Donation</span>
+                                </NavigationMenuLink>
+                            </Link>
+                        </NavigationMenuItem>
+
+                        <NavigationMenuItem>
+                            <Link href="/about-us">
+                                <NavigationMenuLink
+                                    class="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                                >
+                                    <Users class="h-4 w-4 mr-2" />
+                                    <span>About Us</span>
+                                </NavigationMenuLink>
+                            </Link>
+                        </NavigationMenuItem>
+                    </NavigationMenuList>
+                </NavigationMenu>
+
+                <!-- Auth Buttons (Right) -->
+                <div class="flex items-center gap-2">
+                    <Link href="/register" class="hidden md:flex">
+                        <Button
+                            variant="secondary"
+                            class="bg-slate-200 hover:bg-slate-300"
                         >
+                            <UserPlus class="h-4 w-4 mr-2" />
                             Sign Up
-                        </Link>
-                        <Link
-                            href="/login"
-                            class="bg-blue-600 text-white hover:bg-blue-700 transition duration-150 px-3 py-2 rounded-md text-sm font-medium"
+                        </Button>
+                    </Link>
+                    <Link href="/login">
+                        <Button
+                            variant="default"
+                            class="bg-blue-600 hover:bg-blue-700"
                         >
+                            <LogIn class="h-4 w-4 mr-2" />
                             Sign In
-                        </Link>
-                    </div>
+                        </Button>
+                    </Link>
 
-                    <!-- Mobile menu button -->
-                    <div class="flex items-center sm:hidden">
-                        <button
-                            @click="mobileMenuOpen = !mobileMenuOpen"
-                            class="text-gray-400 hover:text-white"
-                        >
-                            <svg
-                                class="h-6 w-6"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    v-if="!mobileMenuOpen"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M4 6h16M4 12h16M4 18h16"
-                                />
-                                <path
-                                    v-else
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
-                    </div>
+                    <!-- Mobile Menu Button -->
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        class="md:hidden"
+                        @click="mobileMenuOpen = !mobileMenuOpen"
+                    >
+                        <Menu v-if="!mobileMenuOpen" class="h-5 w-5" />
+                        <X v-else class="h-5 w-5" />
+                    </Button>
                 </div>
             </div>
 
-            <!-- Mobile menu -->
-            <div v-show="mobileMenuOpen" class="sm:hidden">
-                <div class="pt-2 pb-3 space-y-1">
+            <!-- Mobile Navigation -->
+            <nav v-show="mobileMenuOpen" class="md:hidden">
+                <div class="space-y-2 p-4">
                     <Link
-                        href="/"
-                        class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700"
+                        v-for="item in navigationItems"
+                        :key="item.href"
+                        :href="item.href"
+                        class="flex items-center space-x-2 rounded-md p-2 hover:bg-accent"
+                        @click="mobileMenuOpen = false"
                     >
-                        Home
-                    </Link>
-                    <Link
-                        href="/donation"
-                        class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700"
-                    >
-                        Donation
-                    </Link>
-                    <Link
-                        href="/about-us"
-                        class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700"
-                    >
-                        About Us
-                    </Link>
-                    <Link
-                        href="/register"
-                        class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700"
-                    >
-                        Sign Up
-                    </Link>
-                    <Link
-                        href="/login"
-                        class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700"
-                    >
-                        Sign In
+                        <component :is="item.icon" class="h-4 w-4" />
+                        <span>{{ item.label }}</span>
                     </Link>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </header>
 
-        <!-- Main Content -->
-        <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 pb-24">
+        <!-- Main Content dengan margin bottom untuk space footer -->
+        <main class="container py-6 mb-20">
             <slot></slot>
         </main>
 
-        <!-- Footer -->
-        <footer
-            class="bg-gray-800 border-t border-gray-700 absolute bottom-0 w-full"
-        >
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <p class="text-center text-gray-400">
-                    © 2024 CFU - CrowdFund University. All rights reserved.
+        <!-- Fixed Footer -->
+        <footer class="fixed bottom-0 w-full border-t bg-background z-40">
+            <div class="container py-6">
+                <p class="text-center text-sm text-muted-foreground">
+                    © 2024 {{ appName }} - CrowdFund University. All rights
+                    reserved.
                 </p>
             </div>
         </footer>
@@ -142,10 +129,44 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { Link } from "@inertiajs/vue3";
+import { ref, computed } from "vue";
+import { Link, Head, usePage } from "@inertiajs/vue3";
+import { Button } from "@/Components/ui/button";
+import {
+    NavigationMenu,
+    NavigationMenuList,
+    NavigationMenuItem,
+    NavigationMenuLink,
+} from "@/Components/ui/navigation-menu";
+import {
+    GraduationCap,
+    Home,
+    Heart,
+    Users,
+    UserPlus,
+    LogIn,
+    Menu,
+    X,
+} from "lucide-vue-next";
 
 const mobileMenuOpen = ref(false);
+
+// App name dari .env
+const appName = computed(() => usePage().props.app.name);
+
+// Title dinamis
+const title = computed(() => {
+    const pageTitle = usePage().props.title;
+    return pageTitle ? `${pageTitle} - ${appName.value}` : appName.value;
+});
+
+const navigationItems = [
+    { href: "/", label: "Home", icon: Home },
+    { href: "/donation", label: "Donation", icon: Heart },
+    { href: "/about-us", label: "About Us", icon: Users },
+    { href: "/register", label: "Sign Up", icon: UserPlus },
+    { href: "/login", label: "Sign In", icon: LogIn },
+];
 </script>
 
 <style>
