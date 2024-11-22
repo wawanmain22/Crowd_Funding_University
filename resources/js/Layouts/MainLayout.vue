@@ -62,24 +62,22 @@
 
                 <!-- Auth Buttons (Right) -->
                 <div class="flex items-center gap-2">
-                    <Link href="/register" class="hidden md:flex">
                         <Button
                             variant="secondary"
                             class="bg-slate-200 hover:bg-slate-300"
+                            @click="openModal('register')"
                         >
                             <UserPlus class="h-4 w-4 mr-2" />
                             Sign Up
                         </Button>
-                    </Link>
-                    <Link href="/login">
                         <Button
                             variant="default"
-                            class="bg-blue-600 hover:bg-blue-700"
+                            class="bg-blue-600 hover:bg-blue-700 text-white"
+                             @click="openModal('login')"
                         >
                             <LogIn class="h-4 w-4 mr-2" />
                             Sign In
                         </Button>
-                    </Link>
 
                     <!-- Mobile Menu Button -->
                     <Button
@@ -111,8 +109,17 @@
             </nav>
         </header>
 
+       <!-- Modal Login dan Register -->
+        <AuthenticationModal :show="showModal" @close="closeModal">
+            <template #default>
+                <LoginRegisterForm :formType="modalType" />
+            </template>
+        </AuthenticationModal>
+
+
         <!-- Main Content dengan margin bottom untuk space footer -->
         <main class="container py-6 mb-20">
+            <!-- Modal Login -->
             <slot></slot>
         </main>
 
@@ -148,6 +155,27 @@ import {
     Menu,
     X,
 } from "lucide-vue-next";
+
+//ambil  modal (faris)
+import AuthenticationModal from '@/Components/authentication/AuthenticationModal.vue';
+import LoginRegisterForm from '@/Components/authentication/LoginRegister.vue';
+
+const showModal = ref(false);
+const modalType = ref(''); // 'login' atau 'register'
+
+const openModal = (type) => {
+    modalType.value = type;
+    showModal.value = true;
+    formType.value = type
+};
+
+const closeModal = () => {
+  showModal.value = false;
+};
+
+
+
+//end of  modal
 
 const mobileMenuOpen = ref(false);
 

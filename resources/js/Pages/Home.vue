@@ -8,7 +8,7 @@
                     <h1
                         class="text-4xl font-bold text-gray-900 dark:text-white"
                     >
-                        Wujudkan Impian Pendidikan Bersama CFU
+                        Wujudkan Impian Pendidikan Bersama KawanKuliah
                     </h1>
 
                     <!-- Gambar dengan ukuran lebih besar -->
