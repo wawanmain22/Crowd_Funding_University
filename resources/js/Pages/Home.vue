@@ -3,7 +3,9 @@
         <!-- Hero Section -->
         <div class="space-y-12">
             <!-- Main Hero -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+            <div
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-8"
+            >
                 <div class="max-w-3xl mx-auto text-center space-y-6">
                     <h1
                         class="text-4xl font-bold text-gray-900 dark:text-white"
@@ -34,7 +36,9 @@
                 </div>
             </div>
             <!-- Why Choose Us -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+            <div
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-8"
+            >
                 <h2
                     class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center"
                 >
@@ -94,7 +98,7 @@
 
             <!-- Call to Action -->
             <div
-                class="bg-blue-600 dark:bg-blue-700 rounded-lg shadow-md p-8 text-white"
+                class="bg-blue-600 dark:bg-blue-700 rounded-lg shadow-lg border border-blue-500 dark:border-blue-600 p-8 text-white"
             >
                 <div class="max-w-3xl mx-auto text-center space-y-4">
                     <h2 class="text-2xl font-bold">Mari Berbagi Kebaikan</h2>
@@ -115,7 +119,9 @@
             </div>
 
             <!-- Testimonial/Thank You Section -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+            <div
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-8"
+            >
                 <div class="max-w-3xl mx-auto text-center space-y-4">
                     <div class="flex items-center justify-center gap-4 mb-6">
                         <div class="w-16 h-16 flex items-center justify-center">
