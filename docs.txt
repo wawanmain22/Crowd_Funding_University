@@ -1,0 +1,171 @@
+DOKUMENTASI PROYEK CFU
+Tanggal Update: 5 Desember 2024
+
+RINGKASAN PROYEK
+CFU (Crowdfunding University) adalah platform crowdfunding yang menghubungkan donatur dengan mahasiswa untuk membantu mereka mencapai tujuan pendidikan tinggi mereka.
+
+TEKNOLOGI YANG DIGUNAKAN
+Base semua project: Laravel Version 11
+- Backend: Laravel
+- Frontend: Vue.js 3.4.0
+- CSS: Tailwind CSS
+- Komponen UI: shadcn/ui Vue
+- Icon: Lucide Vue
+- Build Tool: Vite 5.0
+
+STRUKTUR DATABASE
+1. Users
+   - id (PK)
+   - username (unique)
+   - password
+   - role (enum: admin, student)
+   - remember_token
+   - timestamps
+
+2. Admins
+   - id (PK)
+   - user_id (FK)
+   - name
+   - email (unique)
+   - phone_number
+   - position
+   - timestamps
+
+3. Students
+   - id (PK)
+   - user_id (FK)
+   - name
+   - email (unique)
+   - phone_number
+   - university_name
+   - faculty
+   - major
+   - student_number (unique)
+   - timestamps
+
+4. Donors
+   - id (PK)
+   - name
+   - email (unique)
+   - phone_number
+   - created_at
+
+5. Donations
+   - id (PK)
+   - donor_id (FK)
+   - amount
+   - description (nullable)
+   - created_at
+
+6. FundingRequests
+   - id (PK)
+   - user_student_id (FK)
+   - user_reviewer_id (FK, nullable)
+   - amount_requested
+   - reason
+   - supporting_document
+   - status (enum: pending, approved, rejected)
+   - reviewer_note (nullable)
+   - timestamps
+
+7. Disbursements
+   - id (PK)
+   - funding_request_id (FK)
+   - user_reviewer_id (FK)
+   - amount
+   - disbursement_proof
+   - status (enum: pending, completed, failed)
+   - timestamps
+
+MIDDLEWARE
+- CheckRole: Middleware untuk mengatur akses berdasarkan role pengguna (admin/student)
+- Konfigurasi middleware berada di bootstrap/app.php sesuai dengan standar Laravel 11
+
+KOMPONEN SHADCN/UI YANG SUDAH TERPASANG
+- Button
+- Card
+- Checkbox
+- Dialog
+- Input
+- Label
+- Navigation Menu
+- Select
+- Textarea
+
+KOMPONEN KUSTOM
+Lokasi: /resources/js/Components/ui/
+- ApplicationLogo.vue
+- Checkbox.vue
+- DangerButton.vue
+- Dropdown.vue
+- DropdownLink.vue
+- InputError.vue
+- InputLabel.vue
+- Modal.vue
+- NavLink.vue
+- PrimaryButton.vue
+- ResponsiveNavLink.vue
+- SecondaryButton.vue
+- TextInput.vue
+
+HALAMAN YANG SUDAH SELESAI
+1. Halaman Utama (Home.vue)
+2. Halaman Donasi (Donation.vue)
+3. Halaman Tentang Kami (About.vue)
+4. Tampilan Modal Daftar dan Masuk
+
+DEPENDENCIES DEVELOPMENT
+- @inertiajs/vue3: 1.0.0
+- @vitejs/plugin-vue: 5.0.0
+- autoprefixer: 10.4.12
+- axios: 1.7.4
+- concurrently: 9.0.1
+- laravel-vite-plugin: 1.0
+- postcss: 8.4.31
+- tailwindcss: 3.2.1
+- vite: 5.0
+
+DEPENDENCIES PRODUCTION
+- @vueuse/core: 12.0.0
+- class-variance-authority: 0.7.0
+- clsx: 2.1.1
+- lucide-vue-next: 0.460.0
+- radix-vue: 1.9.10
+- tailwind-merge: 2.5.4
+- tailwindcss-animate: 1.0.7
+
+CARA MEMULAI PROYEK
+1. Clone repository
+2. Install dependencies:
+   npm install
+   composer install
+3. Jalankan migrasi database:
+   php artisan migrate
+4. Jalankan server development:
+   npm run dev
+   php artisan serve
+
+STATUS SAAT INI
+- Semua halaman utama (Home, Donation, About Us) sudah diimplementasi
+- Tampilan frontend untuk autentikasi sudah selesai
+- Komponen UI dasar dari shadcn/ui sudah terintegrasi
+- Desain responsif diterapkan di semua halaman
+- Struktur database dan relasi sudah diimplementasi
+- Middleware role-based authentication sudah dikonfigurasi
+
+LANGKAH SELANJUTNYA
+- Implementasi sistem autentikasi
+- Pembuatan halaman admin untuk manajemen data pengajuan
+- Pembuatan halaman mahasiswa untuk pengajuan
+- Implementasi dashboard pengguna
+- Menambahkan fitur pelacakan donasi
+- Meningkatkan validasi formulir
+- Menambahkan integrasi payment gateway
+- Implementasi sistem notifikasi email
+
+CATATAN UNTUK CONTEXT CURSOR AI
+Dokumentasi ini dapat digunakan sebagai konteks untuk prompt Cursor AI, khususnya saat:
+- Membuat komponen baru yang perlu sesuai dengan gaya yang ada
+- Mengimplementasikan komponen shadcn/ui tambahan
+- Memodifikasi halaman yang ada
+- Menambahkan fitur baru yang perlu terintegrasi dengan arsitektur saat ini
