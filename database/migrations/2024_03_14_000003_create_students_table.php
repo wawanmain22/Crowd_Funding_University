@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('faculty');
             $table->string('major');
             $table->string('student_number')->unique();
-            $table->timestamps();
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 

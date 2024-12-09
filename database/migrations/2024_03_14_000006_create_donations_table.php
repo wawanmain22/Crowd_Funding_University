@@ -13,7 +13,8 @@ return new class extends Migration
             $table->foreignId('donor_id')->constrained();
             $table->decimal('amount', 12, 2);
             $table->text('description')->nullable();
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->decimal('amount', 12, 2);
             $table->string('disbursement_proof');
             $table->enum('status', ['pending', 'completed', 'failed'])->default('pending');
-            $table->timestamps();
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 

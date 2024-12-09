@@ -12,6 +12,8 @@ class Donation extends Model
         'donor_id',
         'amount',
         'description',
+        'created_at',
+        'updated_at',
     ];
 
     public function donor()

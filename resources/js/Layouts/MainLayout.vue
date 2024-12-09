@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-background" :class="{ dark: isDark }">
         <Head>
-            <title>{{ title }}</title>
+            <title>{{ usePage().props.title }}</title>
             <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         </Head>
 
@@ -18,9 +18,9 @@
                         <GraduationCap
                             class="h-6 w-6 text-blue-500 dark:text-blue-400"
                         />
-                        <span class="font-bold text-gray-900 dark:text-white">{{
-                            appName
-                        }}</span>
+                        <span class="font-bold text-gray-900 dark:text-white"
+                            >CFU</span
+                        >
                     </Link>
                 </div>
 
@@ -73,19 +73,19 @@
                         <span class="sr-only">Toggle theme</span>
                     </Button>
 
-                    <Button
-                        variant="secondary"
-                        class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
-                        @click="showSignUpModal = true"
-                    >
-                        <UserPlus class="h-4 w-4 mr-2" />
-                        Sign Up
-                    </Button>
+                    <Link href="/register">
+                        <Button
+                            variant="secondary"
+                            class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+                        >
+                            <UserPlus class="h-4 w-4 mr-2" />
+                            Sign Up
+                        </Button>
+                    </Link>
                     <Link href="/login">
                         <Button
                             variant="default"
                             class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
-                            @click="showSignInModal = true"
                         >
                             <LogIn class="h-4 w-4 mr-2" />
                             Sign In
@@ -146,24 +146,9 @@
             <p
                 class="text-center text-sm text-gray-600 dark:text-gray-400 py-6"
             >
-                © 2024 {{ appName }} - CrowdFund University. All rights
-                reserved.
+                © 2024 CrowdFunding University. All rights reserved.
             </p>
         </footer>
-
-        <Dialog :open="showSignUpModal" @update:open="showSignUpModal = false">
-            <DialogContent class="sm:max-w-[500px]">
-                <SignUp @close="showSignUpModal = false" />
-            </DialogContent>
-        </Dialog>
-        <Dialog :open="showSignInModal" @update:open="showSignInModal = false">
-            <DialogContent class="sm:max-w-[500px]">
-                <SignIn
-                    @close="showSignInModal = false"
-                    @openSignUp="openSignUpFromSignIn"
-                />
-            </DialogContent>
-        </Dialog>
     </div>
 </template>
 
@@ -189,29 +174,9 @@ import {
     Sun,
     Moon,
 } from "lucide-vue-next";
-import SignUp from "@/Auth/SignUp.vue";
-import SignIn from "@/Auth/SignIn.vue";
-import { Dialog, DialogContent } from "@/Components/ui/dialog";
 
 const mobileMenuOpen = ref(false);
 const isDark = ref(false);
-const showSignUpModal = ref(false);
-const showSignInModal = ref(false);
-
-// Method untuk membuka SignUp dari SignIn
-const openSignUpFromSignIn = () => {
-    showSignInModal.value = false;
-    showSignUpModal.value = true;
-};
-
-// App name dari .env
-const appName = computed(() => usePage().props.app.name);
-
-// Title dinamis
-const title = computed(() => {
-    const pageTitle = usePage().props.title;
-    return pageTitle ? `${pageTitle} - ${appName.value}` : appName.value;
-});
 
 // Navigation items
 const navigationItems = [

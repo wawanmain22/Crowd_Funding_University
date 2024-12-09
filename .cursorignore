@@ -1,0 +1,38 @@
+# Dependencies
+/node_modules
+/vendor
+
+# Build output
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/logs
+/storage/framework
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE and editor files
+/.idea
+/.vscode
+*.sublime-project
+*.sublime-workspace
+
+# Cache and temporary files
+.phpunit.result.cache
+.php_cs.cache
+.php-cs-fixer.cache
+Homestead.json
+Homestead.yaml
+
+# Compiled assets
+/public/css
+/public/js
+/public/mix-manifest.json
+
+# Other
+.DS_Store
+Thumbs.db

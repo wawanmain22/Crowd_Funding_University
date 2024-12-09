@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
+    public $timestamps = false;
+
     protected $fillable = [
         'user_id',
         'name',
@@ -15,6 +17,8 @@ class Student extends Model
         'faculty',
         'major',
         'student_number',
+        'created_at',
+        'updated_at',
     ];
 
     public function user()

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class FundingRequest extends Model
 {
+    public $timestamps = false;
+
     protected $fillable = [
         'user_student_id',
         'user_reviewer_id',
@@ -14,6 +16,8 @@ class FundingRequest extends Model
         'supporting_document',
         'status',
         'reviewer_note',
+        'created_at',
+        'updated_at',
     ];
 
     public function student()

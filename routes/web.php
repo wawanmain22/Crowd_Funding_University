@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\StudentAuthController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -32,5 +33,7 @@ Route::get('/login', function () {
         'title' => 'Sign In',
     ]);
 })->name('login');
+
+Route::post('/register', [StudentAuthController::class, 'register'])->name('register.store');
 
 // ... routes lainnya jika ada ...

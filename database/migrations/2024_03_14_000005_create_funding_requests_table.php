@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('supporting_document');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->text('reviewer_note')->nullable();
-            $table->timestamps();
+            $table->date('created_at')->nullable();
+            $table->date('updated_at')->nullable();
         });
     }
 
