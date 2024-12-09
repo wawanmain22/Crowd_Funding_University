@@ -98,21 +98,6 @@
                     }}</span>
                 </div>
 
-                <!-- Remember Me -->
-                <div class="flex items-center space-x-2">
-                    <FormCheckbox
-                        id="remember"
-                        v-model="form.remember"
-                        class="data-[state=checked]:bg-blue-500 dark:data-[state=checked]:bg-blue-400"
-                    />
-                    <FormLabel
-                        for="remember"
-                        class="text-sm leading-none text-gray-700 dark:text-gray-200"
-                    >
-                        Ingat saya
-                    </FormLabel>
-                </div>
-
                 <!-- Submit Button -->
                 <div class="flex flex-col space-y-4 pt-4">
                     <Button
@@ -150,7 +135,6 @@ import { Link, useForm } from "@inertiajs/vue3";
 import { Button } from "@/Components/ui/button";
 import { Input as FormInput } from "@/Components/ui/input";
 import { Label as FormLabel } from "@/Components/ui/label";
-import { Checkbox as FormCheckbox } from "@/Components/ui/checkbox";
 import {
     GraduationCap,
     Mail,
@@ -166,7 +150,6 @@ const showPassword = ref(false);
 const form = useForm({
     email: "",
     password: "",
-    remember: false,
 });
 
 const processing = ref(false);
