@@ -8,5 +8,5 @@
 
 <script setup>
 import MainLayout from "@/Layouts/MainLayout.vue";
-import SignIn from "@/Auth/SignIn.vue";
+import SignIn from "@/Components/Auth/SignIn.vue";
 </script>

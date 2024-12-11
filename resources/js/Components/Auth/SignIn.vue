@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-background">
+    <form @submit.prevent="submit" class="min-h-screen bg-background">
         <!-- Header -->
         <div class="text-center mb-8">
             <div class="flex items-center justify-center mb-4">
@@ -20,63 +20,50 @@
             class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 border border-gray-200 dark:border-gray-700"
         >
             <div class="space-y-6">
-                <!-- Email -->
+                <!-- Username -->
                 <div class="space-y-2">
-                    <FormLabel
-                        for="email"
+                    <InputLabel
+                        htmlFor="username"
                         class="text-gray-700 dark:text-gray-200"
-                        >Email</FormLabel
                     >
+                        Username
+                    </InputLabel>
                     <div class="relative">
-                        <Mail
+                        <User
                             class="absolute left-3 top-3 h-4 w-4 text-gray-500 dark:text-gray-400"
                         />
-                        <FormInput
-                            id="email"
-                            v-model="form.email"
-                            type="email"
-                            placeholder="nama@email.com"
+                        <TextInput
+                            id="username"
+                            v-model="form.username"
+                            type="text"
+                            placeholder="Masukkan username"
                             class="pl-9 w-full bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100"
-                            :class="{
-                                'border-red-500 dark:border-red-500':
-                                    errors.email,
-                            }"
+                            required
+                            autofocus
                         />
                     </div>
-                    <span v-if="errors.email" class="text-sm text-red-500">{{
-                        errors.email
-                    }}</span>
+                    <InputError :message="form.errors.username" />
                 </div>
 
                 <!-- Password -->
                 <div class="space-y-2">
-                    <div class="flex justify-between items-center">
-                        <FormLabel
-                            for="password"
-                            class="text-gray-700 dark:text-gray-200"
-                            >Password</FormLabel
-                        >
-                        <Link
-                            href="/forgot-password"
-                            class="text-sm text-blue-500 dark:text-blue-400 hover:underline"
-                        >
-                            Lupa password?
-                        </Link>
-                    </div>
+                    <InputLabel
+                        htmlFor="password"
+                        class="text-gray-700 dark:text-gray-200"
+                    >
+                        Password
+                    </InputLabel>
                     <div class="relative">
                         <Lock
                             class="absolute left-3 top-3 h-4 w-4 text-gray-500 dark:text-gray-400"
                         />
-                        <FormInput
+                        <TextInput
                             id="password"
                             v-model="form.password"
                             :type="showPassword ? 'text' : 'password'"
                             placeholder="Masukkan password"
                             class="pl-9 w-full bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100"
-                            :class="{
-                                'border-red-500 dark:border-red-500':
-                                    errors.password,
-                            }"
+                            required
                         />
                         <button
                             type="button"
@@ -93,31 +80,41 @@
                             />
                         </button>
                     </div>
-                    <span v-if="errors.password" class="text-sm text-red-500">{{
-                        errors.password
-                    }}</span>
+                    <InputError :message="form.errors.password" />
+                </div>
+
+                <!-- Remember Me -->
+                <div class="flex items-center space-x-2">
+                    <Checkbox v-model="form.remember" id="remember" />
+                    <label
+                        for="remember"
+                        class="text-sm text-gray-600 dark:text-gray-300 cursor-pointer"
+                    >
+                        Ingat saya
+                    </label>
                 </div>
 
                 <!-- Submit Button -->
                 <div class="flex flex-col space-y-4 pt-4">
                     <Button
+                        type="submit"
                         class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
-                        :disabled="!isFormValid || processing"
-                        @click="submit"
+                        :class="{
+                            'opacity-50 cursor-not-allowed': form.processing,
+                        }"
+                        :disabled="form.processing"
                     >
-                        <Loader2
-                            v-if="processing"
-                            class="mr-2 h-4 w-4 animate-spin"
-                        />
-                        <LogIn v-else class="mr-2 h-4 w-4" />
-                        Masuk
+                        <LogIn class="w-4 h-4 mr-2" v-if="!form.processing" />
+                        <Loader2 class="w-4 h-4 mr-2 animate-spin" v-else />
+                        {{ form.processing ? "Memproses..." : "Masuk" }}
                     </Button>
+
                     <p
                         class="text-center text-sm text-gray-600 dark:text-gray-400"
                     >
                         Belum punya akun?
                         <Link
-                            href="/register"
+                            :href="route('register')"
                             class="text-blue-500 dark:text-blue-400 hover:underline"
                         >
                             Daftar di sini
@@ -126,18 +123,18 @@
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import { Link, useForm } from "@inertiajs/vue3";
+import { ref } from "vue";
+import { useForm, Link } from "@inertiajs/vue3";
 import { Button } from "@/Components/ui/button";
-import { Input as FormInput } from "@/Components/ui/input";
-import { Label as FormLabel } from "@/Components/ui/label";
+import { Checkbox } from "@/Components/ui/checkbox";
+import { InputError, InputLabel, TextInput } from "@/Components/ui/input";
 import {
     GraduationCap,
-    Mail,
+    User,
     Lock,
     Eye,
     EyeOff,
@@ -148,33 +145,15 @@ import {
 const showPassword = ref(false);
 
 const form = useForm({
-    email: "",
+    username: "",
     password: "",
-});
-
-const processing = ref(false);
-const errors = ref({});
-
-const isFormValid = computed(() => {
-    return (
-        form.email &&
-        form.password &&
-        form.email.includes("@") &&
-        form.password.length >= 8
-    );
+    remember: false,
 });
 
 const submit = () => {
-    if (!isFormValid.value) return;
-
-    processing.value = true;
-    form.post("/login", {
-        onSuccess: () => {
-            processing.value = false;
-        },
-        onError: (err) => {
-            errors.value = err;
-            processing.value = false;
+    form.post(route("login.store"), {
+        onFinish: () => {
+            form.reset("password");
         },
     });
 };

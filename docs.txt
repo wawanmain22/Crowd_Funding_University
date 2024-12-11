@@ -1,5 +1,5 @@
 DOKUMENTASI PROYEK CFU
-Tanggal Update: 5 Desember 2024
+Tanggal Update: 14 Maret 2024
 
 RINGKASAN PROYEK
 CFU (Crowdfunding University) adalah platform crowdfunding yang menghubungkan donatur dengan mahasiswa untuk membantu mereka mencapai tujuan pendidikan tinggi mereka.
@@ -7,11 +7,14 @@ CFU (Crowdfunding University) adalah platform crowdfunding yang menghubungkan do
 TEKNOLOGI YANG DIGUNAKAN
 Base semua project: Laravel Version 11
 - Backend: Laravel
-- Frontend: Vue.js 3.4.0
+- Frontend: Vue.js 3.4.0 dengan Inertia.js
 - CSS: Tailwind CSS
 - Komponen UI: shadcn/ui Vue
 - Icon: Lucide Vue
 - Build Tool: Vite 5.0
+- Database: MySQL
+- Session: Database-based
+- Authentication: Laravel built-in dengan remember me feature
 
 STRUKTUR DATABASE
 1. Users
@@ -80,6 +83,16 @@ STRUKTUR DATABASE
 MIDDLEWARE
 - CheckRole: Middleware untuk mengatur akses berdasarkan role pengguna (admin/student)
 - Konfigurasi middleware berada di bootstrap/app.php sesuai dengan standar Laravel 11
+- Role-based routing sudah diimplementasikan di web.php
+
+FITUR AUTENTIKASI
+- Login dengan username dan password
+- Remember me functionality
+- Role-based access control (Admin/Student)
+- Secure session handling
+- Password hashing dengan bcrypt
+- Token-based remember me
+- Automatic redirect berdasarkan role
 
 KOMPONEN SHADCN/UI YANG SUDAH TERPASANG
 - Button
@@ -91,6 +104,7 @@ KOMPONEN SHADCN/UI YANG SUDAH TERPASANG
 - Navigation Menu
 - Select
 - Textarea
+- Dropdown Menu
 
 KOMPONEN KUSTOM
 Lokasi: /resources/js/Components/ui/
@@ -112,7 +126,32 @@ HALAMAN YANG SUDAH SELESAI
 1. Halaman Utama (Home.vue)
 2. Halaman Donasi (Donation.vue)
 3. Halaman Tentang Kami (About.vue)
-4. Tampilan Modal Daftar dan Masuk
+4. Halaman Login (Auth/Login.vue)
+5. Halaman Register (Auth/Register.vue)
+6. Dashboard Admin (Admin/Dashboard.vue)
+7. Dashboard Student (Student/Dashboard.vue)
+8. Halaman Profile (Profile/Show.vue)
+
+STRUKTUR ROUTING
+1. Public Routes
+   - Home
+   - Donation
+   - About Us
+
+2. Auth Routes (middleware: guest)
+   - Login
+   - Register
+
+3. Profile Routes (middleware: auth)
+   - Profile View
+   - Profile Update
+   - Password Update
+
+4. Student Routes (middleware: auth, role:student)
+   - Student Dashboard
+
+5. Admin Routes (middleware: auth, role:admin)
+   - Admin Dashboard
 
 DEPENDENCIES DEVELOPMENT
 - @inertiajs/vue3: 1.0.0
@@ -136,36 +175,66 @@ DEPENDENCIES PRODUCTION
 
 CARA MEMULAI PROYEK
 1. Clone repository
-2. Install dependencies:
+2. Copy .env.example ke .env dan sesuaikan konfigurasi
+3. Install dependencies:
    npm install
    composer install
-3. Jalankan migrasi database:
+4. Generate app key:
+   php artisan key:generate
+5. Jalankan migrasi dan seeder:
    php artisan migrate
-4. Jalankan server development:
+   php artisan db:seed
+6. Jalankan server development:
    npm run dev
    php artisan serve
 
 STATUS SAAT INI
-- Semua halaman utama (Home, Donation, About Us) sudah diimplementasi
-- Tampilan frontend untuk autentikasi sudah selesai
-- Komponen UI dasar dari shadcn/ui sudah terintegrasi
-- Desain responsif diterapkan di semua halaman
-- Struktur database dan relasi sudah diimplementasi
-- Middleware role-based authentication sudah dikonfigurasi
+- Sistem autentikasi sudah selesai dengan role-based access
+- Semua halaman utama sudah diimplementasi
+- Dashboard admin dan student sudah tersedia
+- Profile management sudah berfungsi
+- Dark mode sudah terimplementasi
+- Responsive design sudah diterapkan
+- Remember me functionality sudah berfungsi
 
 LANGKAH SELANJUTNYA
-- Implementasi sistem autentikasi
-- Pembuatan halaman admin untuk manajemen data pengajuan
-- Pembuatan halaman mahasiswa untuk pengajuan
-- Implementasi dashboard pengguna
-- Menambahkan fitur pelacakan donasi
-- Meningkatkan validasi formulir
-- Menambahkan integrasi payment gateway
-- Implementasi sistem notifikasi email
+1. Sistem Pengajuan Dana
+   - Form pengajuan dana
+   - Upload dokumen pendukung
+   - Status tracking
+
+2. Sistem Review Admin
+   - Dashboard review pengajuan
+   - Approval/Rejection system
+   - Catatan review
+
+3. Sistem Donasi
+   - Integrasi payment gateway
+   - Receipt generation
+   - Donation tracking
+
+4. Notifikasi
+   - Email notifications
+   - In-app notifications
+   - Status updates
+
+5. Reporting
+   - Generate laporan donasi
+   - Statistik dashboard
+   - Export data
+
+CATATAN KEAMANAN
+- Pastikan selalu menggunakan HTTPS di production
+- Semua input sudah divalidasi
+- Password menggunakan hashing
+- Session menggunakan database driver
+- CSRF protection aktif
+- Role-based access control diterapkan
+- Remember me token selalu di-refresh
 
 CATATAN UNTUK CONTEXT CURSOR AI
-Dokumentasi ini dapat digunakan sebagai konteks untuk prompt Cursor AI, khususnya saat:
-- Membuat komponen baru yang perlu sesuai dengan gaya yang ada
-- Mengimplementasikan komponen shadcn/ui tambahan
-- Memodifikasi halaman yang ada
-- Menambahkan fitur baru yang perlu terintegrasi dengan arsitektur saat ini
+Dokumentasi ini mencerminkan status proyek per 14 Maret 2024 dan dapat digunakan sebagai referensi untuk:
+- Pengembangan fitur baru
+- Debugging
+- Integrasi komponen
+- Pemahaman arsitektur sistem

@@ -59,8 +59,8 @@
                     </NavigationMenuList>
                 </NavigationMenu>
 
-                <!-- Auth Buttons & Theme Toggle (Right) -->
-                <div class="flex items-center gap-2">
+                <!-- Navigation (Right) -->
+                <div class="flex items-center justify-end space-x-8">
                     <!-- Theme Toggle -->
                     <Button
                         variant="ghost"
@@ -73,35 +73,155 @@
                         <span class="sr-only">Toggle theme</span>
                     </Button>
 
-                    <Link href="/register">
-                        <Button
-                            variant="secondary"
-                            class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
-                        >
-                            <UserPlus class="h-4 w-4 mr-2" />
-                            Sign Up
-                        </Button>
-                    </Link>
-                    <Link href="/login">
-                        <Button
-                            variant="default"
-                            class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
-                        >
-                            <LogIn class="h-4 w-4 mr-2" />
-                            Sign In
-                        </Button>
-                    </Link>
+                    <!-- Auth Buttons -->
+                    <template v-if="$page.props.auth?.user">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger
+                                as="div"
+                                class="cursor-pointer"
+                            >
+                                <button
+                                    class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                                >
+                                    <div class="flex items-center gap-2">
+                                        <div
+                                            class="p-1 bg-gray-100 dark:bg-gray-800 rounded-full"
+                                        >
+                                            <User
+                                                class="w-6 h-6 text-gray-600 dark:text-gray-300"
+                                            />
+                                        </div>
+                                        <span
+                                            class="text-gray-700 dark:text-gray-200"
+                                            >{{
+                                                $page.props.auth.user.username
+                                            }}</span
+                                        >
+                                    </div>
+                                    <ChevronDown
+                                        class="w-4 h-4 ml-1 text-gray-500"
+                                    />
+                                </button>
+                            </DropdownMenuTrigger>
 
-                    <!-- Mobile Menu Button -->
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        class="md:hidden text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-                        @click="mobileMenuOpen = !mobileMenuOpen"
-                    >
-                        <Menu v-if="!mobileMenuOpen" class="h-5 w-5" />
-                        <X v-else class="h-5 w-5" />
-                    </Button>
+                            <DropdownMenuContent align="end" class="w-56">
+                                <Link
+                                    v-if="
+                                        $page.props.auth.user.role === 'admin'
+                                    "
+                                    :href="route('admin.dashboard')"
+                                >
+                                    <DropdownMenuItem
+                                        as="div"
+                                        class="cursor-pointer"
+                                    >
+                                        <div
+                                            class="flex items-center justify-between w-full"
+                                        >
+                                            <div
+                                                class="flex items-center gap-2"
+                                            >
+                                                <LayoutDashboard
+                                                    class="w-4 h-4 text-gray-500"
+                                                />
+                                                <span>Panel Admin</span>
+                                            </div>
+                                            <ChevronRight
+                                                class="w-4 h-4 text-gray-400"
+                                            />
+                                        </div>
+                                    </DropdownMenuItem>
+                                </Link>
+                                <Link v-else :href="route('student.dashboard')">
+                                    <DropdownMenuItem
+                                        as="div"
+                                        class="cursor-pointer"
+                                    >
+                                        <div
+                                            class="flex items-center justify-between w-full"
+                                        >
+                                            <div
+                                                class="flex items-center gap-2"
+                                            >
+                                                <GraduationCap
+                                                    class="w-4 h-4 text-gray-500"
+                                                />
+                                                <span>Panel Student</span>
+                                            </div>
+                                            <ChevronRight
+                                                class="w-4 h-4 text-gray-400"
+                                            />
+                                        </div>
+                                    </DropdownMenuItem>
+                                </Link>
+                                <Link :href="route('profile')">
+                                    <DropdownMenuItem
+                                        as="div"
+                                        class="cursor-pointer"
+                                    >
+                                        <div
+                                            class="flex items-center justify-between w-full"
+                                        >
+                                            <div
+                                                class="flex items-center gap-2"
+                                            >
+                                                <User
+                                                    class="w-4 h-4 text-gray-500"
+                                                />
+                                                <span>Profile</span>
+                                            </div>
+                                            <ChevronRight
+                                                class="w-4 h-4 text-gray-400"
+                                            />
+                                        </div>
+                                    </DropdownMenuItem>
+                                </Link>
+                                <form
+                                    @submit.prevent="logout"
+                                    class="border-t border-gray-200 dark:border-gray-700 mt-1 pt-1"
+                                >
+                                    <DropdownMenuItem
+                                        as="button"
+                                        class="w-full cursor-pointer"
+                                    >
+                                        <div
+                                            class="flex items-center justify-between w-full text-red-600 hover:text-red-700"
+                                        >
+                                            <div
+                                                class="flex items-center gap-2"
+                                            >
+                                                <LogOut class="w-4 h-4" />
+                                                <span>Logout</span>
+                                            </div>
+                                            <ChevronRight class="w-4 h-4" />
+                                        </div>
+                                    </DropdownMenuItem>
+                                </form>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </template>
+                    <template v-else>
+                        <div class="flex items-center gap-4">
+                            <Link href="/register">
+                                <Button
+                                    variant="secondary"
+                                    class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+                                >
+                                    <UserPlus class="h-4 w-4 mr-2" />
+                                    Sign Up
+                                </Button>
+                            </Link>
+                            <Link href="/login">
+                                <Button
+                                    variant="default"
+                                    class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+                                >
+                                    <LogIn class="h-4 w-4 mr-2" />
+                                    Sign In
+                                </Button>
+                            </Link>
+                        </div>
+                    </template>
                 </div>
             </div>
 
@@ -154,7 +274,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { Link, Head, usePage } from "@inertiajs/vue3";
+import { Link, Head, usePage, router } from "@inertiajs/vue3";
 import { Button } from "@/Components/ui/button";
 import {
     NavigationMenu,
@@ -162,6 +282,12 @@ import {
     NavigationMenuItem,
     NavigationMenuLink,
 } from "@/Components/ui/navigation-menu";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/Components/ui/dropdown-menu";
 import {
     GraduationCap,
     Home,
@@ -173,6 +299,12 @@ import {
     X,
     Sun,
     Moon,
+    UserCircle,
+    ChevronDown,
+    ChevronRight,
+    User,
+    LogOut,
+    LayoutDashboard,
 } from "lucide-vue-next";
 
 const mobileMenuOpen = ref(false);
@@ -207,6 +339,10 @@ const initializeTheme = () => {
 const toggleTheme = () => {
     isDark.value = !isDark.value;
     localStorage.setItem("theme", isDark.value ? "dark" : "light");
+};
+
+const logout = () => {
+    router.post(route("logout"));
 };
 
 // Initialize theme on mount
