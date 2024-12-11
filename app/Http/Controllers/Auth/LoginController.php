@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
@@ -35,17 +34,22 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        // Get the user before logging out
-        if ($user = Auth::user()) {
-            // Clear remember token using DB facade
-            DB::table('users')
-                ->where('id', $user->id)
-                ->update(['remember_token' => null]);
-        }
+        // Get user ID before logout
+        $userId = Auth::id();
 
+        // First, perform logout
         Auth::logout();
+
+        // Second, invalidate the session
         $request->session()->invalidate();
+
+        // Third, regenerate token
         $request->session()->regenerateToken();
+
+        // Clear remember token if we had a user
+        if ($userId) {
+            User::where('id', $userId)->update(['remember_token' => null]);
+        }
 
         // Clear remember me cookie
         if ($request->hasCookie('remember_web_')) {
