@@ -1,7 +1,7 @@
 <template>
     <MainLayout>
-        <div class="container py-6">
-            <!-- Header Section -->
+        <div class="p-6">
+            <!-- Existing dashboard content -->
             <div class="flex justify-between items-center mb-6">
                 <div>
                     <h1

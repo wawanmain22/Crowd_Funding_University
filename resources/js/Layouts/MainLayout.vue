@@ -1,5 +1,8 @@
 <template>
-    <div class="min-h-screen bg-background" :class="{ dark: isDark }">
+    <div
+        class="min-h-screen bg-background dark:bg-[#0A0A0A]"
+        :class="{ dark: isDark }"
+    >
         <Head>
             <title>{{ usePage().props.title }}</title>
             <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -7,7 +10,7 @@
 
         <!-- Navbar -->
         <header
-            class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+            class="sticky top-0 z-50 w-full border-b bg-background dark:bg-[#0A0A0A] dark:border-[#1a1a1a]"
         >
             <div
                 class="container flex h-14 max-w-7xl items-center justify-between"
@@ -37,9 +40,9 @@
                                 <NavigationMenuLink
                                     class="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 text-gray-700 dark:text-gray-200"
                                     :class="{
-                                        'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-accent/70 dark:text-white dark:border-0':
+                                        'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-[#1a1a1a] dark:text-white dark:border-[#2a2a2a]':
                                             isCurrentRoute(item.href),
-                                        'hover:bg-blue-50 hover:text-blue-700':
+                                        'hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-[#1a1a1a] dark:hover:text-white':
                                             !isDark,
                                     }"
                                 >
@@ -104,7 +107,10 @@
                                 </button>
                             </DropdownMenuTrigger>
 
-                            <DropdownMenuContent align="end" class="w-56">
+                            <DropdownMenuContent
+                                align="end"
+                                class="w-56 dark:bg-[#0A0A0A] dark:border-[#1a1a1a]"
+                            >
                                 <Link
                                     v-if="
                                         $page.props.auth.user.role === 'admin'
@@ -226,7 +232,7 @@
             </div>
 
             <!-- Mobile Navigation -->
-            <nav v-show="mobileMenuOpen" class="md:hidden">
+            <nav v-show="mobileMenuOpen" class="md:hidden dark:bg-[#0A0A0A]">
                 <div class="space-y-2 p-4">
                     <Link
                         v-for="item in navigationItems"
@@ -254,15 +260,31 @@
             </nav>
         </header>
 
-        <!-- Main Content -->
-        <main
-            class="container py-6 min-h-[calc(100vh-8rem)] bg-background dark:bg-gray-900"
-        >
-            <slot></slot>
-        </main>
+        <!-- Layout dengan atau tanpa sidebar -->
+        <div v-if="shouldShowSidebar" class="flex h-[calc(100vh-56px)]">
+            <!-- Sidebar -->
+            <AdminSidebar v-if="isAdmin" />
+            <StudentSidebar v-else-if="isStudent" />
+
+            <!-- Main Content dengan sidebar -->
+            <main
+                class="flex-1 overflow-y-auto bg-background dark:bg-[#0A0A0A]"
+            >
+                <slot></slot>
+            </main>
+        </div>
+
+        <!-- Layout tanpa sidebar untuk route publik -->
+        <div v-else>
+            <main class="bg-background dark:bg-[#0A0A0A]">
+                <slot></slot>
+            </main>
+        </div>
 
         <!-- Footer -->
-        <footer class="w-full border-t bg-background dark:bg-gray-900">
+        <footer
+            class="w-full border-t dark:border-[#1a1a1a] bg-background dark:bg-[#0A0A0A]"
+        >
             <p
                 class="text-center text-sm text-gray-600 dark:text-gray-400 py-6"
             >
@@ -306,6 +328,8 @@ import {
     LogOut,
     LayoutDashboard,
 } from "lucide-vue-next";
+import AdminSidebar from "@/Components/Sidebar/AdminSidebar.vue";
+import StudentSidebar from "@/Components/Sidebar/StudentSidebar.vue";
 
 const mobileMenuOpen = ref(false);
 const isDark = ref(false);
@@ -358,6 +382,26 @@ onMounted(() => {
             }
         });
 });
+
+const isAdmin = computed(() => {
+    return usePage().props.auth?.user?.role === "admin";
+});
+
+const isStudent = computed(() => {
+    return usePage().props.auth?.user?.role === "student";
+});
+
+// Cek apakah route saat ini adalah route admin atau student
+const shouldShowSidebar = computed(() => {
+    const currentPath = window.location.pathname;
+    if (isAdmin.value) {
+        return currentPath.startsWith("/admin");
+    }
+    if (isStudent.value) {
+        return currentPath.startsWith("/student");
+    }
+    return false;
+});
 </script>
 
 <style>
@@ -367,16 +411,53 @@ onMounted(() => {
 
 .dark {
     color-scheme: dark;
+    /* Tambahkan CSS variables untuk dark mode */
+    --background: 0 0% 4%; /* Hitam solid */
+    --card: 0 0% 4%;
+    --popover: 0 0% 4%;
+    --border: 0 0% 10%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 63%;
+    --accent: 0 0% 10%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --ring: 0 0% 83.9%;
 }
 
 .min-h-screen {
     min-height: 100vh;
 }
 
-/* Tambahan untuk memastikan transisi yang smooth */
+/* Transisi yang lebih halus */
 .dark .transition-colors {
     transition-property: background-color, border-color, color, fill, stroke;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
+}
+
+/* Tambahan untuk memastikan konsistensi warna dark mode */
+.dark {
+    background-color: #0a0a0a;
+}
+
+.dark button,
+.dark .dropdown-content {
+    background-color: #0a0a0a;
+    border-color: #1a1a1a;
+}
+
+.dark button:hover {
+    background-color: #1a1a1a;
+}
+
+/* Override untuk komponen shadcn */
+.dark [data-radix-popper-content-wrapper] {
+    background-color: #0a0a0a !important;
+    border-color: #1a1a1a !important;
 }
 </style>
